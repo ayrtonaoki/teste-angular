@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html ng-app="Teste">
+<head>
+
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script type="text/javascript">
+
+		angular.module("Teste", []).controller("testeController", function($scope){
+
+			$scope.frmInclusao = {
+				"nome": "",
+				"idade": "",
+				"pais": ""
+			};
+
+			$scope.nomeListaPessoas = "Lista de Pessoas";
+			$scope.listaPessoas = [];
+
+			$scope.pessoa1 = {
+				"nome": "Ayrton",
+				"idade": 22,
+				"pais": "Brasil"
+
+			};
+
+			$scope.pessoa2 = {
+				"nome": "Gustavo",
+				"idade": 22,
+				"pais": "Brasil"
+			};
+
+			$scope.listaPessoas.push($scope.pessoa1);
+			$scope.listaPessoas.push($scope.pessoa2);
+
+			$scope.exibirFormularioInclusao = false;
+
+			$scope.incluirPessoa = function(){
+
+				$scope.listaPessoas.push({
+					nome: $scope.frmInclusao.nome,
+					idade: $scope.frmInclusao.idade,
+					pais: $scope.frmInclusao.pais
+				});
+
+				$scope.frmInclusao = {
+					"nome": "",
+					"idade": "",
+					"pais": ""
+				};
+
+			}
+
+			$scope.excluirPessoa = function(sNome){
+
+				var listaPessoasNova = $scope.listaPessoas.filter(
+					function(pessoa){ 
+						return pessoa.nome != sNome 
+					});
+
+				$scope.listaPessoas = listaPessoasNova;
+			}
+
+		});
+
+	</script>
+</head>
+
+<body ng-controller="testeController">
+
+	<!-- PARTE DE CIMA DA PAGINA -->
+	<div class="container">
+		<div class="jumbotron">
+			<h1>Teste</h1>
+			<p><a class="btn btn-primary btn-lg" ng-click="exibirFormularioInclusao = true;" ng-hide="exibirFormularioInclusao" href="#" role="button">Incluir pessoa</a></p>
+		</div>
+
+		<!-- INCLUSAO DE PESSOAS -->
+		<div class="panel panel-default" ng-show="exibirFormularioInclusao">
+			<div class="panel-heading">Inclusão de pessoa</div>
+			<div class="panel-body">
+
+				<!-- FORMULARIO DE INCLUSAO DE PESSOAS -->
+				<div class="form-group">
+					<label>Nome</label>
+					<input class="form-control" type="text" ng-model="frmInclusao.nome">
+				</div>
+				<div class="form-group">
+					<label>Idade</label>
+					<input class="form-control" type="text" ng-model="frmInclusao.idade">
+				</div>
+				<div class="form-group">
+					<label>Pais</label>
+					<input class="form-control" type="text" ng-model="frmInclusao.pais">
+				</div>
+				<div class="form-group">
+					<button class="btn btn-default" ng-click="incluirPessoa();">Incluir</button>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- LISTA DE PESSOAS -->
+		<div class="panel panel-default">
+			<div class="panel-heading"> {{ nomeListaPessoas }} </div>
+			<div class="panel-body">
+				<ul>
+					<li ng-repeat="pessoa in listaPessoas"> 
+
+						<!-- PAINEIS DE CADA PESSOA INCLUIDA -->
+						<div class="panel panel-default">
+							<div class="panel-heading"> {{ pessoa.nome }}  </div>
+							<div class="panel-body">
+
+								<ul>
+									<li>Idade: {{ pessoa.idade }} </li>
+									<li>Pais: {{ pessoa.pais }} </li>
+								</ul>
+								<button class="btn btn-default" ng-click="excluirPessoa(pessoa.nome)">Excluir</button>
+
+							</div>						
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+
+</html>
